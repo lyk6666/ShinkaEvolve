@@ -2605,6 +2605,8 @@ ${'='.repeat(80)}
                 console.log("[DEBUG] Server returned databases:", dbs);
 
                 availableDatabases = dbs;
+                console.log("Caching available databases:", availableDatabases);
+                
                 organizeDatabases(dbs);
 
                 // Auto-load a DB if one is specified in the URL
@@ -2645,10 +2647,12 @@ ${'='.repeat(80)}
         
         function organizeDatabases(dbs) {
             const scanStatus = document.getElementById("scan-status");
+            console.log("Organizing databases:", dbs);
             
             // Clear existing data
             tasksAndResults = {};
-            
+            console.log("Cleared tasksAndResults:", tasksAndResults);
+
             if (dbs.length === 0) {
                 scanStatus.textContent = "No databases found.";
                 return;
@@ -2656,7 +2660,10 @@ ${'='.repeat(80)}
 
             // Organize databases by task
             dbs.forEach(db => {
-                const pathParts = db.path.split('/');
+                console.log("pathParts initial", db.path);
+                const pathParts = db.path.split(/[\\/]+/);
+                console.log("Processing database path parts:", pathParts);
+
                 if (pathParts.length >= 3) {
                     const task = pathParts[pathParts.length - 3]; // Third to last part is the task
                     const result = pathParts[pathParts.length - 2]; // Second to last part is the result
@@ -2670,6 +2677,7 @@ ${'='.repeat(80)}
                         path: db.path,
                         sortKey: db.sort_key || '0'
                     });
+                    console.log("Populate the tasksAndResults.......................")
                 }
             });
 
